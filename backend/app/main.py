@@ -27,6 +27,10 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 if not openai.api_key:
     raise ValueError("OPENAI_API_KEY environment variable is not set")
 
+@app.get("/healthz")
+async def health_check():
+    return {"status": "healthy"}
+
 @app.post("/analyze-diagram")
 async def analyze_diagram(file: UploadFile = File(...)):
     try:
