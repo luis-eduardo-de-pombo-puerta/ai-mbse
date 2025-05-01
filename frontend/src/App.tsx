@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { PhotoIcon } from '@heroicons/react/24/outline'
 import axios from 'axios'
+import config from './config'
 
 function App() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -30,7 +31,7 @@ function App() {
     formData.append('file', selectedFile)
 
     try {
-      const response = await axios.post('http://localhost:8000/analyze-diagram', formData, {
+      const response = await axios.post(`${config.apiUrl}/analyze-diagram`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -45,7 +46,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-8">
