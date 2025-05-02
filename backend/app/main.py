@@ -44,7 +44,7 @@ async def analyze_diagram(file: UploadFile = File(...)):
         
         # Call OpenAI API (new API)
         response = openai_client.chat.completions.create(
-            model="gpt-4-vision",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "user",
