@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import openai
 import base64
 from typing import Optional
+import traceback
 
 # Load environment variables
 load_dotenv()
@@ -34,7 +35,7 @@ async def health_check():
 @app.post("/analyze-diagram")
 async def analyze_diagram(file: UploadFile = File(...)):
     try:
-        # Read the uploaded file
+        print("Received file:", file.filename)
         contents = await file.read()
         
         # Convert image to base64
@@ -69,6 +70,8 @@ async def analyze_diagram(file: UploadFile = File(...)):
         return JSONResponse(content={"analysis": analysis})
     
     except Exception as e:
+        print("Error in /analyze-diagram:", str(e))
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/")
