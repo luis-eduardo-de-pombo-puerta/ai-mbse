@@ -3,9 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import os
 from dotenv import load_dotenv
-import openai
+import requests
 import base64
-from typing import Optional
 import traceback
 
 # Load environment variables
@@ -23,8 +22,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize OpenAI client (new API)
-openai_client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Hugging Face API settings
+HF_API_URL = "https://api-inference.huggingface.co/models/liuhaotian/llava-v1.5-13b"
+HF_TOKEN = os.getenv("HF_API_TOKEN")
+if not HF_TOKEN:
+    raise ValueError("HF_API_TOKEN environment variable is not set")
 
 @app.get("/healthz")
 async def health_check():
@@ -35,38 +37,18 @@ async def analyze_diagram(file: UploadFile = File(...)):
     try:
         print("Received file:", file.filename)
         contents = await file.read()
-        
-        # Convert image to base64
-        base64_image = base64.b64encode(contents).decode('utf-8')
-        
-        # Prepare the prompt
         prompt = "Describe this SysML Activity Diagram, focusing on system safety aspects relevant to aerospace engineering."
-        
-        # Call OpenAI API (new API)
-        response = openai_client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "text", "text": prompt},
-                        {
-                            "type": "image_url",
-                            "image_url": {
-                                "url": f"data:image/jpeg;base64,{base64_image}"
-                            }
-                        }
-                    ]
-                }
-            ],
-            max_tokens=1000
-        )
-        
-        # Extract the analysis from the response
-        analysis = response.choices[0].message.content
-        
+        headers = {"Authorization": f"Bearer {HF_TOKEN}"}
+        files = {"image": contents}
+        data = {"inputs": {"question": prompt}}
+        response = requests.post(HF_API_URL, headers=headers, files=files, data={"question": prompt})
+        if response.status_code != 200:
+            print("Hugging Face API error:", response.text)
+            raise HTTPException(status_code=500, detail=f"Hugging Face API error: {response.text}")
+        result = response.json()
+        # LLaVA returns a dict with 'answer' or similar key
+        analysis = result.get("answer") or result.get("generated_text") or str(result)
         return JSONResponse(content={"analysis": analysis})
-    
     except Exception as e:
         print("Error in /analyze-diagram:", str(e))
         traceback.print_exc()
