@@ -23,7 +23,7 @@ app.add_middleware(
 )
 
 # Hugging Face API settings
-HF_API_URL = "https://api-inference.huggingface.co/models/liuhaotian/llava-v1.5-7b"
+HF_API_URL = "https://api-inference.huggingface.co/models/Salesforce/blip2-opt-2.7b"
 HF_TOKEN = os.getenv("HF_API_TOKEN")
 if not HF_TOKEN:
     raise ValueError("HF_API_TOKEN environment variable is not set")
@@ -40,14 +40,14 @@ async def analyze_diagram(file: UploadFile = File(...)):
         prompt = "Describe this SysML Activity Diagram, focusing on system safety aspects relevant to aerospace engineering."
         headers = {"Authorization": f"Bearer {HF_TOKEN}"}
         files = {"image": contents}
-        data = {"inputs": {"question": prompt}}
-        response = requests.post(HF_API_URL, headers=headers, files=files, data={"question": prompt})
+        data = {"inputs": prompt}
+        response = requests.post(HF_API_URL, headers=headers, files=files, data=data)
         if response.status_code != 200:
             print("Hugging Face API error:", response.text)
             raise HTTPException(status_code=500, detail=f"Hugging Face API error: {response.text}")
         result = response.json()
-        # LLaVA returns a dict with 'answer' or similar key
-        analysis = result.get("answer") or result.get("generated_text") or str(result)
+        # BLIP-2 returns a dict with 'generated_text' key
+        analysis = result.get("generated_text") or str(result)
         return JSONResponse(content={"analysis": analysis})
     except Exception as e:
         print("Error in /analyze-diagram:", str(e))
