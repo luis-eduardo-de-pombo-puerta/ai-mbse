@@ -23,10 +23,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize OpenAI client
-openai.api_key = os.getenv("OPENAI_API_KEY")
-if not openai.api_key:
-    raise ValueError("OPENAI_API_KEY environment variable is not set")
+# Initialize OpenAI client (new API)
+openai_client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @app.get("/healthz")
 async def health_check():
@@ -44,8 +42,8 @@ async def analyze_diagram(file: UploadFile = File(...)):
         # Prepare the prompt
         prompt = "Describe this SysML Activity Diagram, focusing on system safety aspects relevant to aerospace engineering."
         
-        # Call OpenAI API
-        response = await openai.ChatCompletion.acreate(
+        # Call OpenAI API (new API)
+        response = openai_client.chat.completions.create(
             model="gpt-4-vision-preview",
             messages=[
                 {
