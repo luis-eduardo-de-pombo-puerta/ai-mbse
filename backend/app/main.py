@@ -23,7 +23,7 @@ app.add_middleware(
 )
 
 # Hugging Face API settings
-HF_API_URL = "https://api-inference.huggingface.co/models/liuhaotian/llava-v1.5-13b"
+HF_API_URL = "https://api-inference.huggingface.co/models/liuhaotian/llava-v1.5-7b"
 HF_TOKEN = os.getenv("HF_API_TOKEN")
 if not HF_TOKEN:
     raise ValueError("HF_API_TOKEN environment variable is not set")
