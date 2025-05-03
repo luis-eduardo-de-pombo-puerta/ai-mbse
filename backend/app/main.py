@@ -54,8 +54,13 @@ async def analyze_diagram(file: UploadFile = File(...)):
             print("Hugging Face API error:", response.text)
             raise HTTPException(status_code=500, detail=f"Hugging Face API error: {response.text}")
         result = response.json()
-        # BLIP returns a dict with 'generated_text' key
-        analysis = result.get("generated_text") or str(result)
+        # BLIP returns a list of dicts or a dict with 'generated_text' key
+        if isinstance(result, list) and len(result) > 0:
+            analysis = result[0].get("generated_text", str(result[0]))
+        elif isinstance(result, dict):
+            analysis = result.get("generated_text") or str(result)
+        else:
+            analysis = str(result)
         return JSONResponse(content={"analysis": analysis})
     except Exception as e:
         print("Error in /analyze-diagram:", str(e))
