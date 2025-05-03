@@ -38,10 +38,18 @@ async def analyze_diagram(file: UploadFile = File(...)):
         print("Received file:", file.filename)
         contents = await file.read()
         prompt = "Describe this SysML Activity Diagram, focusing on system safety aspects relevant to aerospace engineering."
-        headers = {"Authorization": f"Bearer {HF_TOKEN}"}
-        files = {"image": contents}
-        data = {"inputs": prompt}
-        response = requests.post(HF_API_URL, headers=headers, files=files, data=data)
+        headers = {
+            "Authorization": f"Bearer {HF_TOKEN}",
+            "Content-Type": "application/json"
+        }
+        image_base64 = base64.b64encode(contents).decode("utf-8")
+        payload = {
+            "inputs": {
+                "image": image_base64,
+                "prompt": prompt
+            }
+        }
+        response = requests.post(HF_API_URL, headers=headers, json=payload)
         if response.status_code != 200:
             print("Hugging Face API error:", response.text)
             raise HTTPException(status_code=500, detail=f"Hugging Face API error: {response.text}")
