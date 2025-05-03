@@ -22,11 +22,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Grok API settings
-GROK_API_URL = "https://api.grok.ai/v1/analyze"
-GROK_API_KEY = os.getenv("GROK_API_KEY")
-if not GROK_API_KEY:
-    raise ValueError("GROK_API_KEY environment variable is not set")
+# Hugging Face API settings
+HF_API_URL = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-base"
+HF_TOKEN = os.getenv("HF_API_TOKEN")
+if not HF_TOKEN:
+    raise ValueError("HF_API_TOKEN environment variable is not set")
 
 @app.get("/healthz")
 async def health_check():
@@ -38,15 +38,16 @@ async def analyze_diagram(file: UploadFile = File(...)):
         print("Received file:", file.filename)
         contents = await file.read()
         prompt = "Describe this SysML Activity Diagram, focusing on system safety aspects relevant to aerospace engineering."
-        headers = {"Authorization": f"Bearer {GROK_API_KEY}"}
+        headers = {"Authorization": f"Bearer {HF_TOKEN}"}
         files = {"image": contents}
-        data = {"prompt": prompt}
-        response = requests.post(GROK_API_URL, headers=headers, files=files, data=data)
+        data = {"inputs": prompt}
+        response = requests.post(HF_API_URL, headers=headers, files=files, data=data)
         if response.status_code != 200:
-            print("Grok API error:", response.text)
-            raise HTTPException(status_code=500, detail=f"Grok API error: {response.text}")
+            print("Hugging Face API error:", response.text)
+            raise HTTPException(status_code=500, detail=f"Hugging Face API error: {response.text}")
         result = response.json()
-        analysis = result.get("analysis") or str(result)
+        # BLIP returns a dict with 'generated_text' key
+        analysis = result.get("generated_text") or str(result)
         return JSONResponse(content={"analysis": analysis})
     except Exception as e:
         print("Error in /analyze-diagram:", str(e))
