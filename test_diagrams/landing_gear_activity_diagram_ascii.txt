@@ -1,0 +1,53 @@
++------------------+     +--------------------------+     +------------------------+
+|      Start       |---->| Pilot Initiates Gear     |---->| Check Airspeed < 250  |
+|                  |     | Extension                |     | knots                 |
++------------------+     +--------------------------+     +------------------------+
+                                                                    |
+                                                                    v
++------------------+     +--------------------------+     +------------------------+
+|  Display Warning |<----|        No                |     |         Yes           |
+| "Reduce Airspeed"|     |                          |     |                       |
++------------------+     +--------------------------+     +------------------------+
+                                                                    |
+                                                                    v
++------------------+     +--------------------------+     +------------------------+
+|  Unlock Gear     |<----|                          |     |                        |
+| Doors            |     |                          |     |                        |
++------------------+     +--------------------------+     +------------------------+
+         |
+         v
++------------------+     +--------------------------+     +------------------------+
+|  Extend Landing  |---->| Verify Gear Down and     |---->| Display "Gear Down    |
+| Gear             |     | Locked                   |     | and Locked"           |
++------------------+     +--------------------------+     +------------------------+
+                                    |
+                                    v
++------------------+     +--------------------------+     +------------------------+
+|  Activate        |<----|         No               |     |                        |
+| Emergency        |     |                          |     |                        |
+| Extension        |     |                          |     |                        |
++------------------+     +--------------------------+     +------------------------+
+         |
+         v
++------------------+     +--------------------------+     +------------------------+
+|  Verify Emergency|---->| Display "Landing Gear    |---->| Activate Emergency    |
+| Extension        |     | Failure"                 |     | Procedures            |
++------------------+     +--------------------------+     +------------------------+
+         |
+         v
++------------------+     +--------------------------+     +------------------------+
+|  Display "Gear   |     |                          |     |         End           |
+| Down and Locked" |     |                          |     |                       |
++------------------+     +--------------------------+     +------------------------+
+
+Safety Critical Points:
+1. Airspeed check must be below 250 knots
+2. Gear must be down and locked before landing
+3. Emergency extension system must be available
+4. Multiple verification points for gear position
+
+Potential Hazards:
+1. Gear extension at high speed
+2. Gear not locked in position
+3. Emergency extension system failure
+4. False positive gear position indication 

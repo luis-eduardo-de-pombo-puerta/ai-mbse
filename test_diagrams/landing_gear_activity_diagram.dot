@@ -1,0 +1,42 @@
+digraph LandingGearActivity {
+    rankdir=LR;
+    node [shape=box, style=filled, fillcolor=lightblue];
+    edge [arrowhead=vee];
+
+    // Main flow
+    Start -> "Pilot Initiates\nGear Extension";
+    "Pilot Initiates\nGear Extension" -> "Check Airspeed\n< 250 knots";
+    
+    // Airspeed check decision
+    "Check Airspeed\n< 250 knots" -> "Unlock Gear\nDoors" [label="Yes"];
+    "Check Airspeed\n< 250 knots" -> "Display Warning:\nReduce Airspeed" [label="No"];
+    
+    // Normal extension flow
+    "Unlock Gear\nDoors" -> "Extend Landing\nGear";
+    "Extend Landing\nGear" -> "Verify Gear\nDown and Locked";
+    
+    // Verification decision
+    "Verify Gear\nDown and Locked" -> "Display Gear\nDown and Locked" [label="Yes"];
+    "Verify Gear\nDown and Locked" -> "Activate Emergency\nExtension" [label="No"];
+    
+    // Emergency flow
+    "Activate Emergency\nExtension" -> "Verify Emergency\nExtension";
+    "Verify Emergency\nExtension" -> "Display Gear\nDown and Locked" [label="Yes"];
+    "Verify Emergency\nExtension" -> "Display Landing\nGear Failure" [label="No"];
+    
+    // Failure handling
+    "Display Landing\nGear Failure" -> "Activate Emergency\nProcedures";
+    "Activate Emergency\nProcedures" -> End;
+
+    // Style for safety critical nodes
+    node [fillcolor=lightpink];
+    "Check Airspeed\n< 250 knots";
+    "Verify Gear\nDown and Locked";
+    "Verify Emergency\nExtension";
+    
+    // Style for emergency nodes
+    node [fillcolor=lightyellow];
+    "Activate Emergency\nExtension";
+    "Display Landing\nGear Failure";
+    "Activate Emergency\nProcedures";
+} 

@@ -1,0 +1,27 @@
+Landing Gear System Activity Diagram
+
+[Start] -> [Pilot Initiates Gear Extension]
+[Pilot Initiates Gear Extension] -> [Check Airspeed < 250 knots]
+[Check Airspeed < 250 knots] -> [Yes] -> [Unlock Gear Doors]
+[Check Airspeed < 250 knots] -> [No] -> [Display Warning: "Reduce Airspeed"]
+[Unlock Gear Doors] -> [Extend Landing Gear]
+[Extend Landing Gear] -> [Verify Gear Down and Locked]
+[Verify Gear Down and Locked] -> [Yes] -> [Display "Gear Down and Locked"]
+[Verify Gear Down and Locked] -> [No] -> [Activate Emergency Extension]
+[Activate Emergency Extension] -> [Verify Emergency Extension]
+[Verify Emergency Extension] -> [Yes] -> [Display "Gear Down and Locked"]
+[Verify Emergency Extension] -> [No] -> [Display "Landing Gear Failure"]
+[Display "Landing Gear Failure"] -> [Activate Emergency Procedures]
+[Activate Emergency Procedures] -> [End]
+
+Safety Critical Points:
+1. Airspeed check must be below 250 knots
+2. Gear must be down and locked before landing
+3. Emergency extension system must be available
+4. Multiple verification points for gear position
+
+Potential Hazards:
+1. Gear extension at high speed
+2. Gear not locked in position
+3. Emergency extension system failure
+4. False positive gear position indication 
