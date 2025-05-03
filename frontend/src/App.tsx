@@ -20,6 +20,24 @@ function App() {
     }
   }
 
+  // Drag-and-drop handlers
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    const file = event.dataTransfer.files?.[0]
+    if (file) {
+      setSelectedFile(file)
+      setPreviewUrl(URL.createObjectURL(file))
+      setAnalysis(null)
+      setError(null)
+    }
+  }
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     if (!selectedFile) return
@@ -69,7 +87,11 @@ function App() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Upload Diagram
                 </label>
-                <div className="mt-1 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                <div
+                  className="mt-1 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                >
                   <div className="text-center">
                     <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
                     <div className="mt-4 flex text-sm leading-6 text-gray-600">
