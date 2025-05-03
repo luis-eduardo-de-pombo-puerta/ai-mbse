@@ -37,7 +37,12 @@ async def analyze_diagram(file: UploadFile = File(...)):
     try:
         print("Received file:", file.filename)
         contents = await file.read()
-        prompt = "Describe this SysML Activity Diagram, focusing on system safety aspects relevant to aerospace engineering."
+        prompt = (
+            "Provide a detailed caption for this engineering process diagram. "
+            "Describe the sequence of actions, list the main actions and decision points, "
+            "and mention any safety checks or safety-related steps shown in the diagram. "
+            "What does this diagram illustrate about system safety?"
+        )
         headers = {
             "Authorization": f"Bearer {HF_TOKEN}",
             "Content-Type": "application/json"
