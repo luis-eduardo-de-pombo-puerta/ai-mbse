@@ -72,7 +72,7 @@ function App() {
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">
+          <h1 className="text-3xl font-bold text-white mb-8 drop-shadow-lg" style={{textShadow: '0 2px 8px #0008'}}>
             SysML Activity Diagram Analyzer
           </h1>
           <p className="text-gray-600 mb-8">
