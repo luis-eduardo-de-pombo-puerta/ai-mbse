@@ -75,7 +75,7 @@ function App() {
           <h1 className="text-3xl font-bold text-white mb-8 drop-shadow-lg" style={{textShadow: '0 2px 8px #0008'}}>
             SysML Activity Diagram Analyzer
           </h1>
-          <p className="text-gray-600 mb-8">
+          <p className="text-white mb-8 drop-shadow" style={{textShadow: '0 2px 8px #0008'}}>
             Upload a SysML Activity Diagram to analyze its system safety aspects relevant to aerospace engineering.
           </p>
         </div>
