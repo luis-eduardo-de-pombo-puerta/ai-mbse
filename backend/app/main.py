@@ -57,7 +57,10 @@ async def analyze_diagram(file: UploadFile = File(...)):
         response = requests.post(HF_API_URL, headers=headers, json=payload)
         if response.status_code != 200:
             print("Hugging Face API error:", response.text)
-            raise HTTPException(status_code=500, detail=f"Hugging Face API error: {response.text}")
+            return JSONResponse(status_code=502, content={
+                "error": "huggingface",
+                "message": f"Hugging Face API error: {response.text}"
+            })
         result = response.json()
         # BLIP returns a list of dicts or a dict with 'generated_text' key
         if isinstance(result, list) and len(result) > 0:
@@ -70,6 +73,11 @@ async def analyze_diagram(file: UploadFile = File(...)):
     except Exception as e:
         print("Error in /analyze-diagram:", str(e))
         traceback.print_exc()
+        if hasattr(e, 'detail') and isinstance(e.detail, str) and 'Hugging Face API error' in e.detail:
+            return JSONResponse(status_code=502, content={
+                "error": "huggingface",
+                "message": e.detail
+            })
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/")

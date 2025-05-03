@@ -37,8 +37,13 @@ function App() {
         },
       })
       setAnalysis(response.data.analysis)
-    } catch (err) {
-      setError('Error analyzing the diagram. Please try again.')
+    } catch (err: any) {
+      // Check for Hugging Face error
+      if (err.response && err.response.data && err.response.data.error === 'huggingface') {
+        setError('Hugging Face API is currently unavailable or returned an error. Please try again later.');
+      } else {
+        setError('Error analyzing the diagram. Please try again.')
+      }
       console.error(err)
     } finally {
       setLoading(false)
