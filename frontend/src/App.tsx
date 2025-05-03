@@ -80,7 +80,7 @@ function App() {
           </p>
         </div>
 
-        <div className="bg-white shadow rounded-lg p-6">
+        <div className="bg-white/80 shadow-lg rounded-xl p-6 border border-blue-900/30 backdrop-blur-sm">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="flex justify-center">
               <div className="w-full max-w-lg">
@@ -131,7 +131,7 @@ function App() {
               <button
                 type="submit"
                 disabled={!selectedFile || loading}
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="rounded-md bg-blue-700 px-4 py-2.5 text-sm font-bold text-white shadow-lg hover:bg-cyan-400 hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 transition-all duration-200 border border-blue-300/40 drop-shadow-glow disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Analyzing...' : 'Analyze Diagram'}
               </button>

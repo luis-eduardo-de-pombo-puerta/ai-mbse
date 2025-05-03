@@ -1,9 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply min-h-screen bg-gray-50;
+    @apply min-h-screen;
+    background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', Arial, sans-serif;
+    letter-spacing: 0.03em;
   }
 }
